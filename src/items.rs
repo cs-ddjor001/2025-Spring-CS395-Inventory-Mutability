@@ -34,7 +34,7 @@ impl Item {
     ///
     /// Retrieve name
     ///
-    pub fn get_id(self) -> u64 {
+    pub fn get_id(&self) -> u64 {
         self.id
     }
 
@@ -45,15 +45,15 @@ impl Item {
     ///
     /// * `nme` - replacement id
     ///
-    pub fn set_id(self, id: u64) {
+    pub fn set_id(&mut self, id: u64) {
         self.id = id;
     }
 
     ///
     /// Retrieve name
     ///
-    pub fn get_name(self) -> &str {
-        self.name
+    pub fn get_name(&self) -> &str {
+        &self.name
     }
 
     ///
@@ -63,13 +63,13 @@ impl Item {
     ///
     /// * `nme` - replacement name
     ///
-    pub fn set_name(self, nme: String) {
+    pub fn set_name(&mut self, nme: String) {
         self.name = nme
     }
 }
 
 impl std::fmt::Display for Item {
-    fn fmt(self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         writeln!(f, "{}", self.name)?;
 
         Ok(())
@@ -125,8 +125,8 @@ impl ItemStack {
     ///
     /// the item that serves as the base
     ///
-    pub fn get_item(self) -> Item {
-        self.item
+    pub fn get_item(&self) -> &Item {
+        &self.item
     }
 
     ///
@@ -136,7 +136,7 @@ impl ItemStack {
     ///
     /// the current number of items
     ///
-    pub fn size(self) -> usize {
+    pub fn size(&self) -> usize {
         self.quantity
     }
 
@@ -147,7 +147,7 @@ impl ItemStack {
     ///
     /// * `qty` - number of items to add
     ///
-    pub fn add_items(self, qty: usize) {
+    pub fn add_items(&mut self, qty: usize) {
         self.quantity += qty;
     }
 
@@ -160,14 +160,14 @@ impl ItemStack {
     ///
     /// true if the addition of items is permitted
     ///
-    pub fn permits_stacking(self) -> bool {
+    pub fn permits_stacking(&self) -> bool {
         // For now... all items are stackable
         return true;
     }
 }
 
 impl std::fmt::Display for ItemStack {
-    fn fmt(self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         writeln!(f, "({:2}) {}", self.quantity, self.item)?;
 
         Ok(())

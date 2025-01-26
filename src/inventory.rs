@@ -45,7 +45,7 @@ impl Inventory {
     ///
     /// * `rhs` - stack whose size we need to examine
     ///
-    pub fn merge_stacks(lhs: &mut ItemStack, rhs: ItemStack) {
+    pub fn merge_stacks(lhs: &mut ItemStack, rhs: &ItemStack) {
         // lhs needs to have items added to it.
         // rhs's size is needed
         // lhs.????(rhs.????)
@@ -69,14 +69,14 @@ impl Inventory {
     ///
     /// Determine the number of slots currently in use.
     ///
-    pub fn utilized_slots(self) -> usize {
+    pub fn utilized_slots(&self) -> usize {
         return self.slots.len();
     }
 
     ///
     /// Determine the number of empty (unused) slots.
     ///
-    pub fn empty_slots(self) -> usize {
+    pub fn empty_slots(&self) -> usize {
         self.total_slots() - self.utilized_slots()
     }
 
@@ -84,7 +84,7 @@ impl Inventory {
     /// Retrieve the capacity (number of distinct types of items) that self
     /// inventory can store.
     ///
-    pub fn total_slots(self) -> usize {
+    pub fn total_slots(&self) -> usize {
         self.capacity
     }
 
@@ -95,7 +95,7 @@ impl Inventory {
     ///
     /// true if the current size is equal to capacity
     ///
-    pub fn is_full(self) -> bool {
+    pub fn is_full(&self) -> bool {
         self.empty_slots() == 0
     }
 
@@ -106,7 +106,7 @@ impl Inventory {
     ///
     /// true if current size is zero
     ///
-    pub fn is_empty(self) -> bool {
+    pub fn is_empty(&self) -> bool {
         self.slots.len() == 0
     }
 
@@ -122,7 +122,7 @@ impl Inventory {
     ///
     /// matching stack if one was found and `null` otherwise
     ///
-    pub fn find_matching_item_stack(self, key: &ItemStack) -> Option<&mut ItemStack> {
+    pub fn find_matching_item_stack(&mut self, key: &ItemStack) -> Option<&mut ItemStack> {
         self.slots.iter_mut().find(|stack| stack == &key)
     }
 
@@ -133,7 +133,7 @@ impl Inventory {
     ///
     /// * `to_add` - data that we want to store in a Node and add to the list
     ///
-    pub fn add_item_stack_no_check(self, to_add: ItemStack) {
+    pub fn add_item_stack_no_check(&mut self, to_add: ItemStack) {
         self.slots.push_back(to_add);
     }
 
@@ -148,7 +148,7 @@ impl Inventory {
     ///
     /// true if *stack* was added and false otherwise
     ///
-    pub fn add_items(self, stack: ItemStack) -> bool {
+    pub fn add_items(&mut self, stack: ItemStack) -> bool {
         if let Some(ref mut the_match) = self.find_matching_item_stack(&stack) {
             // If the Item is stackable, add it to the ItemStack
             if the_match.permits_stacking() {
@@ -168,7 +168,7 @@ impl Inventory {
 }
 
 impl std::fmt::Display for Inventory {
-    fn fmt(self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         writeln!(
             f,
             " -Used {} of {} slots",
